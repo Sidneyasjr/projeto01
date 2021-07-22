@@ -5,9 +5,54 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Lista de Afazeres</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l" crossorigin="anonymous">
 </head>
-<body>
-
+<body class="container-fluid">
+<header>
+    <div class="nav-bar navbar-dark bg-dark">
+        <div class="container-fluid d-flex justify-content-between">
+            <div class="navbar-brand d-flex align-items-center">
+                <i class="bi bi-list-check mr-2"></i>
+                <span>To<strong>Do</strong> List</span>
+            </div>
+        </div>
+    </div>
+</header>
+<main>
+    <section class="container py-5 col-lg-7 justify-content-center">
+        <div class="card">
+            <div class="text-center card-header">
+                <h1 class="display-5">Lista de Afazeres</h1>
+            </div>
+            <div class="card-body">
+                <form id="form">
+                    <div class="d-flex justify-content-sm-center">
+                        <input type="text" class="form-control mr-2" id="inputItem"
+                               autocomplete="off" placeholder="Digite um item da lista">
+                        <button type="submit" id="adicionar" class="btn btn-sm btn-primary px-4">
+                            <i class="bi bi-plus-lg"></i></button>
+                    </div>
+                </form>
+                <div class="py-3">
+                    <ul class="list-group" id="lista">
+                        <li  class="list-group-item" id="itemDefault" hidden>
+                                <input type="checkbox" class="">
+                                <span class="ml-2 mr-auto">Item da Lista</span>
+                                <button type="button" class="btn btn-sm btn-danger excluir"><i
+                                        class="bi bi-trash"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="pt-2 my-5 p-2 text-muted border-top">
+    Criado por Sidney Junior · © 2021
+</footer>
+<script src="scripts.js"></script>
 </body>
 </html>
