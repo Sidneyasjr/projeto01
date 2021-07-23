@@ -1,7 +1,7 @@
 var form = document.querySelector("#form");
 var inputItem = document.getElementById("inputItem");
 var lista = document.querySelector("#lista");
-var feito = document.querySelectorAll(".feito");
+
 
 form.addEventListener("submit", function (event) {
     event.preventDefault();
@@ -13,10 +13,9 @@ function addItemNaLista() {
     if (txtItem) {
         var novoItem = document.createElement('li');
         novoItem.classList.add("list-group-item")
-        novoItem.innerHTML = `<input type="checkbox" class="feito" value="0">
+        novoItem.innerHTML = `<input type="checkbox" value="0">
                                 <span class=""></span>
-                                <button type="button" class="btn btn-sm btn-danger excluir float-right"><i
-                                        class="bi bi-trash"></i></button>`
+                                <button type="button" class="btn btn-sm float-right">🗑️Excluir</button>`
         novoItem.querySelector("span").innerHTML = txtItem;
         lista.appendChild(novoItem);
         inputItem.value = "";
@@ -27,8 +26,12 @@ function addItemNaLista() {
 }
 
 lista.addEventListener("click", function (event) {
+    console.log(event.target)
     if (event.target.type == "checkbox") {
         marcarItemFeito(event.target);
+    }
+    if (event.target.type == "button") {
+        event.target.parentNode.remove();
     }
 });
 
@@ -45,4 +48,8 @@ function marcarItemFeito(feito) {
         feito.value = 0;
         itemFeito.classList.remove("item")
     }
+}
+
+function removerItem(item) {
+    item.parentNode.remove();
 }
