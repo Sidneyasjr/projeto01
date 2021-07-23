@@ -3,8 +3,6 @@ var inputItem = document.getElementById("inputItem");
 var lista = document.querySelector("#lista");
 var feito = document.querySelectorAll(".feito");
 
-
-
 form.addEventListener("submit", function (event) {
     event.preventDefault();
     addItemNaLista();
@@ -28,11 +26,10 @@ function addItemNaLista() {
     }
 }
 
-feito.forEach((element) => {
-    console.log(lista);
-    element.addEventListener("click", function (event) {
+lista.addEventListener("click", function (event) {
+    if (event.target.type == "checkbox") {
         marcarItemFeito(event.target);
-    });
+    }
 });
 
 
