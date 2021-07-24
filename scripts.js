@@ -21,9 +21,14 @@ const Task = {
 		App.reload()
 	},
 
-	// checked(index) {
-
-	// },
+	checked(id) {
+		if (Task.all[id - 1].checked == 0) {
+			Task.all[id - 1].checked = 1
+		} else {
+			Task.all[id - 1].checked = 0
+		}
+		App.reload()
+	},
 
 	remove(index) {
 		Task.all.splice(index, 1);
@@ -33,25 +38,28 @@ const Task = {
 }
 
 
-
 const DOM = {
 	tasksContainer: document.querySelector('#lista'),
 
-	addtask(task, index) {
+	addtask(task) {
 		const li = document.createElement('li')
 		li.classList.add("list-group-item")
 		li.innerHTML = DOM.innerHTMLItems(task)
 
 		DOM.tasksContainer.appendChild(li)
 	},
+
+
+
 	innerHTMLItems(task, index) {
-		console.log(index)
 		const CSSclass = task.checked == "0" ? "" : "checked"
-		const html = `<input type="checkbox" value="${task.checked}">
+		const ATTRchecked = task.checked == "0" ? "" : "checked"
+		const html = `<input type="checkbox" ${ATTRchecked} onclick="Task.checked(${task.id})" value="${task.checked}">
                     	<span class="${CSSclass}">${task.description}</span>
 						<i onclick="Task.remove(${index})" class="btn btn-sm text-danger bi bi-trash float-right"></i>`
 		return html
 	},
+
 
 	clearTasks() {
 		DOM.tasksContainer.innerHTML = ""
@@ -60,14 +68,19 @@ const DOM = {
 
 
 const Form = {
+	id: 0,
 	description: document.querySelector("input#description"),
 	checked: "0",
+
+
 	getValues() {
 		return {
+			id: Form.id += 0.5,
 			description: Form.description.value,
 			checked: Form.checked,
 		};
 	},
+
 
 	validateFields() {
 		const { description } = Form.getValues();
