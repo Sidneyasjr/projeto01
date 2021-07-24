@@ -1,55 +1,111 @@
-var form = document.querySelector("#form");
-var inputItem = document.getElementById("inputItem");
-var lista = document.querySelector("#lista");
+const Storage = {
+	get() {
+		return (
+			JSON.parse(localStorage.getItem("dev.inhouse:todolist")) || []
+		);
+	},
 
+	set(tasks) {
+		localStorage.setItem(
+			"dev.inhouse:todolist",
+			JSON.stringify(tasks)
+		);
+	},
+};
 
-form.addEventListener("submit", function (event) {
-    event.preventDefault();
-    addItemNaLista();
-});
+const Task = {
+	all: Storage.get(),
 
-function addItemNaLista() {
-    var txtItem = inputItem.value;
-    if (txtItem) {
-        var novoItem = document.createElement('li');
-        novoItem.classList.add("list-group-item")
-        novoItem.innerHTML = `<input type="checkbox" value="0">
-                                <span class=""></span>
-                                <button type="button" class="btn btn-sm float-right">🗑️Excluir</button>`
-        novoItem.querySelector("span").innerHTML = txtItem;
-        lista.appendChild(novoItem);
-        inputItem.value = "";
-        inputItem.focus();
-    } else {
-        alert("Você deve digitar uma tarefar antes de adicionar")
-    }
+	add(task) {
+		Task.all.push(task);
+		App.reload()
+	},
+
+	// checked(index) {
+
+	// },
+
+	remove(index) {
+		Task.all.splice(index, 1);
+		App.reload()
+	}
+
 }
 
-lista.addEventListener("click", function (event) {
-    console.log(event.target)
-    if (event.target.type == "checkbox") {
-        marcarItemFeito(event.target);
-    }
-    if (event.target.type == "button") {
-        event.target.parentNode.remove();
-    }
-});
 
 
-function marcarItemFeito(feito) {
-    var item = feito.parentNode;
-    var itemFeito = item.querySelector("span");
-    if (feito.checked) {
-        feito.checked = true;
-        feito.value = 1;
-        itemFeito.classList.add("item")
-    } else {
-        feito.checked = false;
-        feito.value = 0;
-        itemFeito.classList.remove("item")
-    }
+const DOM = {
+	tasksContainer: document.querySelector('#lista'),
+
+	addtask(task, index) {
+		const li = document.createElement('li')
+		li.classList.add("list-group-item")
+		li.innerHTML = DOM.innerHTMLItems(task)
+
+		DOM.tasksContainer.appendChild(li)
+	},
+	innerHTMLItems(task, index) {
+		console.log(index)
+		const CSSclass = task.checked == "0" ? "" : "checked"
+		const html = `<input type="checkbox" value="${task.checked}">
+                    	<span class="${CSSclass}">${task.description}</span>
+						<i onclick="Task.remove(${index})" class="btn btn-sm text-danger bi bi-trash float-right"></i>`
+		return html
+	},
+
+	clearTasks() {
+		DOM.tasksContainer.innerHTML = ""
+	}
 }
 
-function removerItem(item) {
-    item.parentNode.remove();
+
+const Form = {
+	description: document.querySelector("input#description"),
+	checked: "0",
+	getValues() {
+		return {
+			description: Form.description.value,
+			checked: Form.checked,
+		};
+	},
+
+	validateFields() {
+		const { description } = Form.getValues();
+		if (description.trim() === "") {
+			throw new Error("Por favor digite um item");
+		}
+	},
+
+	clearFields() {
+		Form.description.value = ""
+	},
+
+	submit(event) {
+		event.preventDefault()
+		try {
+			Form.validateFields()
+			const task = Form.getValues()
+			Task.add(task)
+			Form.clearFields()
+			App.reload()
+		} catch (error) {
+			alert(error.message)
+		}
+	}
 }
+
+
+Storage.get();
+
+const App = {
+	init() {
+		Task.all.forEach(DOM.addtask)
+		Storage.set(Task.all)
+	},
+	reload() {
+		DOM.clearTasks()
+		App.init()
+	},
+}
+
+App.init()
