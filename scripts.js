@@ -100,7 +100,7 @@ const Form = {
 	validateFields() {
 		const { description } = Form.getValues();
 		if (description.trim() === "") {
-			throw new Error("Por favor digite um item");
+			throw new Error("Por favor digite uma tarefa");
 		}
 	},
 
