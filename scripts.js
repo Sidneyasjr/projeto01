@@ -31,7 +31,10 @@ const Task = {
 	},
 
 	remove(index) {
-		Task.all.splice(index, 1);
+		var r = confirm("Deseja Excluir o item da Lista?")
+		if (r == true) {
+			Task.all.splice(index, 1);
+		}
 		App.reload()
 	}
 
