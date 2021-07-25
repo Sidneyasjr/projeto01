@@ -54,7 +54,7 @@ const Task = {
 
 
 const DOM = {
-	tasksContainer: document.querySelector('#lista'),
+	tasksContainer: document.querySelector('#list'),
 
 	addtask(task) {
 		const li = document.createElement('li')
@@ -66,7 +66,7 @@ const DOM = {
 
 
 
-	innerHTMLItems(task, index) {
+	innerHTMLItems(task) {
 		const CSSclass = task.checked == "0" ? "" : "checked"
 		const ATTRchecked = task.checked == "0" ? "" : "checked"
 		const html = `<input type="checkbox" ${ATTRchecked} onclick="Task.checked(${task.id})" value="${task.checked}">
