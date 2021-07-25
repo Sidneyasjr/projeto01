@@ -16,26 +16,38 @@ const Storage = {
 const Task = {
 	all: Storage.get(),
 
+	findId(id) {
+		var found;
+		Task.all.forEach(item => {
+			if (item.id == id) {
+				 found = item
+			}
+		});
+		return found
+	},
+
 	add(task) {
 		Task.all.push(task);
 		App.reload()
 	},
 
 	checked(id) {
-		if (Task.all[id - 1].checked == 0) {
-			Task.all[id - 1].checked = 1
+		if (Task.findId(id).checked == 0) {
+			Task.findId(id).checked = 1
+			App.reload()
 		} else {
-			Task.all[id - 1].checked = 0
+			Task.findId(id).checked = 0
+			App.reload()
 		}
-		App.reload()
 	},
 
-	remove(index) {
+	remove(id) {
+		var index = Task.all.indexOf(Task.findId(id))
 		var r = confirm("Deseja Excluir o item da Lista?")
 		if (r == true) {
 			Task.all.splice(index, 1);
+			App.reload()
 		}
-		App.reload()
 	}
 
 }
@@ -59,7 +71,7 @@ const DOM = {
 		const ATTRchecked = task.checked == "0" ? "" : "checked"
 		const html = `<input type="checkbox" ${ATTRchecked} onclick="Task.checked(${task.id})" value="${task.checked}">
                     	<span class="${CSSclass}">${task.description}</span>
-						<i onclick="Task.remove(${index})" class="btn btn-sm text-danger bi bi-trash float-right"></i>`
+						<i onclick="Task.remove(${task.id})" class="btn btn-sm text-danger bi bi-trash float-right"></i>`
 		return html
 	},
 
